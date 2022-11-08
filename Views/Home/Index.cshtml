@@ -1,8 +1,46 @@
-﻿@{
+﻿@model IEnumerable<Question>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-3">
+    <form name="question" class="question" id="question" action="javascript:check()">
+        @{
+            foreach (var question in Model)
+            {
+                <h3 nane="question-title">@question.Title</h3>
+                foreach (var answer in question.Answers)
+                {
+                    <input name="@question.Title" type="radio" value="@answer.IsRight.ToString()">
+                    @answer.Title
+                    <br>
+                }
+            }
+
+            <div>
+                <input value="Відповісти" type="submit" class="btn btn-primary mt-3 mb-3">
+            </div>
+        }
+
+    </form>
+    <script>
+        function check() {
+            let answers = document.querySelectorAll("input[value=True]");
+            let isTrue = 0;
+            let radio = document.querySelectorAll("input[type=radio]");
+            let count = 0;
+            radio.forEach((e) => {
+                if (e.checked) count++;
+            });
+
+            answers.forEach((e) => {
+                if (e.checked) isTrue++;
+            });
+
+            if (count === radio.length / 4) {
+                 window.location = "/Result?result=" + isTrue;
+            } else alert("Дайте відповіді на питання");
+        }
+    </script>
 </div>

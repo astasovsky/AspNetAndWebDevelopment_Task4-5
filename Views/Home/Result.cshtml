@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Question>
+
+@{
+    ViewData["Title"] = "Result";
+}
+
+<div class="container">
+
+    @{
+        <h3>Кількість правильних відповідей : @ViewBag.result </h3>
+    }
+
+    <form method="get" action="/">
+        <input value="Пройти ще раз" type="submit" class="btn btn-primary mt-3 mb-3">
+    </form>
+</div>

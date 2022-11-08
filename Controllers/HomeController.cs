@@ -1,12 +1,13 @@
-﻿using AspNetAndWebDevelopment_Task4_5.Models;
+﻿using System.Diagnostics;
+using AspNetAndWebDevelopment_Task4_5.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace AspNetAndWebDevelopment_Task4_5.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly Questions _question = new Questions();
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -15,12 +16,17 @@ namespace AspNetAndWebDevelopment_Task4_5.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            IEnumerable<Question> data = _question.GetQuestions;
+            return View(data);
         }
 
-        public IActionResult Privacy()
+        [Route("/Result")]
+        public ViewResult Result(int result)
         {
-            return View();
+            IEnumerable<Question> data = _question.GetQuestions;
+            ViewBag.result = result;
+            return View(data);
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
