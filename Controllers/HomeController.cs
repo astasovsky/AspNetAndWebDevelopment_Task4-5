@@ -21,12 +21,12 @@ namespace AspNetAndWebDevelopment_Task4_5.Controllers
         }
 
         [Route("/Result")]
-        public ViewResult Result(int result)
+        public ViewResult Result(int result, string email)
         {
             IEnumerable<Question> data = _question.GetQuestions;
             ViewBag.result = result;
+            ViewBag.email = email;
             return View(data);
-            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

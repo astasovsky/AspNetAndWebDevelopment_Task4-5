@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<Question>
 
 @{
@@ -8,7 +10,28 @@
 <div class="container">
 
     @{
-        <h3>Кількість правильних відповідей : @ViewBag.result </h3>
+        SmtpClient smtpClient = new("smtp.mailgun.org")
+        {
+            Port = 25,
+            Credentials = new NetworkCredential("postmaster@sandboxd3b7a69eb7ce4286acc1e4755ad87bfd.mailgun.org", "f4a5510ecb8a8e86247a36523fc0388f-48c092ba-295555aa"),
+            EnableSsl = true,
+        };
+
+        MailMessage mailMessage = new(new MailAddress("astasovsky@gmail.com"), new MailAddress(ViewBag.email));
+        mailMessage.Subject = "Результат проходження тесту";
+        mailMessage.Body = "<h1>Кількість правильних відповідей: " + @ViewBag.result + "</h1>";
+        mailMessage.IsBodyHtml = true;
+        <h3>Кількість правильних відповідей: @ViewBag.result </h3>
+        <p>Відправлено на @ViewBag.email</p>
+        try
+        {
+            smtpClient.Send(mailMessage);
+        }
+        catch
+        {
+            // ignored
+        }
+
     }
 
     <form method="get" action="/">
